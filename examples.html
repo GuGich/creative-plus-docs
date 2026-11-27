@@ -1,0 +1,344 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0c0e"><meta name="description" content="Подборка игровых сценариев из технического руководства: от простых сообщений до раундов и боссов."><title>Примеры — Creative+ Docs</title><link rel="stylesheet" href="assets/style.css"></head><body><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark"><span>C+</span></span><span>CREATIVE+ DOCS<small>MINELAND / KNOWLEDGE BASE</small></span></a><nav class="toplinks"><a href="index.html">Главная</a><a href="getting-started.html">Руководство</a><a href="events.html">Каталог</a></nav><div class="search"><input id="globalSearch" type="search" placeholder="Поиск по справочнику…" aria-label="Поиск"></div></header><div class="layout"><aside class="side"><div class="side-group"><p class="side-label">ДОКУМЕНТАЦИЯ</p><a class="" href="index.html"><span class="num">01</span>Обзор</a><a class="" href="getting-started.html"><span class="num">02</span>С чего начать</a><a class="" href="events.html"><span class="num">03</span>События</a><a class="" href="actions.html"><span class="num">04</span>Действия</a><a class="" href="conditions.html"><span class="num">05</span>Условия</a><a class="" href="selection.html"><span class="num">06</span>Выбор целей</a><a class="" href="variables.html"><span class="num">07</span>Переменные</a><a class="" href="collections.html"><span class="num">08</span>Коллекции</a><a class="" href="control-flow.html"><span class="num">09</span>Управление кодом</a><a class="" href="game-values.html"><span class="num">10</span>Игровые значения</a><a class="active" href="examples.html"><span class="num">11</span>Примеры</a></div><div class="side-group"><p class="side-label">РЕСУРС</p><a href="https://mineland.net/" target="_blank" rel="noreferrer"><span class="num">↗</span>Mineland</a></div></aside><main class="main"><div class="page-head"><div class="breadcrumbs"><a href="index.html">CREATIVE+ DOCS</a> / СПРАВОЧНИК</div><div class="eyebrow">REFERENCE / EXAMPLES</div><h1 class="page-title">Примеры</h1><p class="lead">Подборка игровых сценариев из технического руководства: от простых сообщений до раундов и боссов.</p></div><div class="content"><h2>12. Complete examples</h2><p>All examples were checked against the real action list. Copy their structure.</p><h3>Example A: welcome message and a one-time starter kit</h3><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_JOIN&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§aWelcome, §e%player%§a!&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§6Welcome!&quot;, &quot;subtitle&quot;: &quot;§7Have fun&quot;, &quot;duration&quot;: 60}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EXIST&quot;, &quot;not&quot;: true, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kit_%player_uuid%&quot;, &quot;save&quot;: true}}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;PLAYER_GIVE_ITEMS&quot;, &quot;args&quot;: {&quot;items&quot;: [{&quot;item&quot;: &quot;minecraft:stone_sword&quot;}, {&quot;item&quot;: &quot;minecraft:bread&quot;, &quot;count&quot;: 16}]}},
+      {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kit_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;values&quot;: 1}},
+      {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§7You received the starter kit.&quot;}}
+    ]}
+  ]}
+]}</pre><h3>Example B: parkour with a timer and a saved best time</h3><p>Gold block = start, diamond block = finish. Times are in seconds.</p><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_MOVE&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_PLAYER_STANDING_ON&quot;, &quot;args&quot;: {&quot;blocks&quot;: {&quot;item&quot;: &quot;minecraft:gold_block&quot;}}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;pk_start_%player_uuid%&quot;}, &quot;values&quot;: {&quot;val&quot;: &quot;CURRENT_UNIX_TIME&quot;}}},
+      {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§eTimer started!&quot;}}
+    ]},
+    {&quot;action&quot;: &quot;IF_PLAYER_STANDING_ON&quot;, &quot;elseIf&quot;: true, &quot;args&quot;: {&quot;blocks&quot;: {&quot;item&quot;: &quot;minecraft:diamond_block&quot;}}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;pk_start_%player_uuid%&quot;}, &quot;num2&quot;: 0}, &quot;switches&quot;: {&quot;state&quot;: 0}, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;VARIABLE_DIFFERENCE&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;pk_time_%player_uuid%&quot;}, &quot;number&quot;: {&quot;val&quot;: &quot;CURRENT_UNIX_TIME&quot;}, &quot;numbers&quot;: {&quot;var&quot;: &quot;pk_start_%player_uuid%&quot;}}},
+        {&quot;action&quot;: &quot;VARIABLE_QUOTIENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;pk_time_%player_uuid%&quot;}, &quot;number&quot;: {&quot;var&quot;: &quot;pk_time_%player_uuid%&quot;}, &quot;numbers&quot;: 1000}},
+        {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;pk_start_%player_uuid%&quot;}, &quot;values&quot;: 0}},
+        {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§aFinish! Time: §e%var(pk_time_%player_uuid%)%§a s&quot;}},
+        {&quot;action&quot;: &quot;IF_VARIABLE_EXIST&quot;, &quot;not&quot;: true, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;pk_best_%player_uuid%&quot;, &quot;save&quot;: true}}, &quot;children&quot;: [
+          {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;pk_best_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;values&quot;: {&quot;var&quot;: &quot;pk_time_%player_uuid%&quot;}}}
+        ]},
+        {&quot;action&quot;: &quot;ELSE&quot;, &quot;children&quot;: [
+          {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;pk_time_%player_uuid%&quot;}, &quot;num2&quot;: {&quot;var&quot;: &quot;pk_best_%player_uuid%&quot;, &quot;save&quot;: true}}, &quot;switches&quot;: {&quot;state&quot;: 2}, &quot;children&quot;: [
+            {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;pk_best_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;values&quot;: {&quot;var&quot;: &quot;pk_time_%player_uuid%&quot;}}},
+            {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§6New personal best!&quot;}}
+          ]}
+        ]}
+      ]}
+    ]}
+  ]}
+]}</pre><p>Notes: <code>IF_VARIABLE_EASY_COMPARE_NUMBER</code> state 0 = <code>num1 &gt; num2</code>, 1 = <code>&gt;=</code>, 2 = <code>&lt;</code>, 3 = <code>&lt;=</code>. <code>pk_start</code> is set to 0 at the finish so the finish counts once. <code>pk_best</code> is saved, so it survives restarts.</p><h3>Example C: bossbar updated by a loop</h3><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_JOIN&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;GAME_CREATE_BOSSBAR&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;hud&quot;, &quot;title&quot;: &quot;§eLoading...&quot;}, &quot;switches&quot;: {&quot;state&quot;: 2, &quot;state1&quot;: 0}},
+    {&quot;action&quot;: &quot;PLAYER_SHOW_BOSSBAR&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;hud&quot;}},
+    {&quot;action&quot;: &quot;GAME_START_LOOP&quot;, &quot;args&quot;: {&quot;names&quot;: &quot;hud_loop&quot;}}
+  ]},
+  {&quot;kind&quot;: &quot;loop&quot;, &quot;name&quot;: &quot;hud_loop&quot;, &quot;ticks&quot;: 20, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;SELECT_RANDOM_PLAYER&quot;},
+    {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;hud_seconds&quot;}, &quot;number&quot;: 1}},
+    {&quot;action&quot;: &quot;GAME_SET_BOSSBAR_TITLE&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;hud&quot;, &quot;title&quot;: &quot;§eOnline: §f%value(PLOT_ONLINE)% §7| §eUptime: §f%var(hud_seconds)%s&quot;}},
+    {&quot;action&quot;: &quot;GAME_SET_BOSSBAR_PROGRESS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;hud&quot;, &quot;progress&quot;: &quot;%math(mod(%var(hud_seconds)%, 60) * 100 / 60)%&quot;}}
+  ]}
+]}</pre><p>Notes: <code>SELECT_RANDOM_PLAYER</code> makes the rest of the loop run once, not once per player. Bossbar progress is 0..100. Bossbar color <code>state</code>: 0 red, 1 blue, 2 yellow, 3 green, 4 pink, 5 white, 6 purple; style <code>state1</code>: 0 solid, 1..4 = 6, 10, 12, 20 segments.</p><h3>Example D: PvP kill counter with a function</h3><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_JOIN&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;GAME_CREATE_SCOREBOARD&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;kills&quot;, &quot;display_name&quot;: &quot;§c§lKills&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_SHOW_SCOREBOARD&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;kills&quot;}},
+    {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;update_kills&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_KILL_PLAYER&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kills_%player_uuid%&quot;, &quot;save&quot;: true}}},
+    {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;update_kills&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}},
+    {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§c%victim% §7was killed by §a%player%&quot;}}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;update_kills&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;GAME_SET_SCOREBOARD_SCORE&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;kills&quot;, &quot;tag&quot;: &quot;%player%&quot;, &quot;score&quot;: {&quot;var&quot;: &quot;kills_%player_uuid%&quot;, &quot;save&quot;: true}}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;kills_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;num2&quot;: 10}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§6Killing spree!&quot;, &quot;subtitle&quot;: &quot;§e%var(kills_%player_uuid%)% kills&quot;}}
+    ]}
+  ]}
+]}</pre><p>Notes: in <code>PLAYER_KILL_PLAYER</code> the selection and <code>%player%</code> are the killer, <code>%victim%</code> is the killed player. The function runs for the same player and sees the same event. <code>VARIABLE_INCREMENT</code> without <code>number</code> adds 1.</p><h3>Example E: a complete game: zombie waves and a hoe weapon</h3><p>The player gets a hoe. A hit with it does 6 damage, a right click blasts the zombies around (2 s cooldown). A loop sends 4 zombies when none are left. 10 kills win; <code>/play</code> starts a new round. It follows section 14: the round has a <code>phase</code> guard, the zombies have a name and are removed at the start and the end, kills are counted only for named zombies while the round runs, and the zombies spawn at the world spawn, the only place that is surely free.</p><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_JOIN&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;PLAYER_SET_ITEMS&quot;, &quot;args&quot;: {&quot;hotbar&quot;: [{&quot;item&quot;: &quot;minecraft:iron_hoe&quot;, &quot;components&quot;: {&quot;minecraft:custom_name&quot;: &quot;§6Zombie Hoe&quot;, &quot;minecraft:lore&quot;: [&quot;§7Hit: 6 damage&quot;, &quot;§7Right click: blast (2 s)&quot;]}}]}, &quot;switches&quot;: {&quot;state&quot;: 1}},
+    {&quot;action&quot;: &quot;PLAYER_SET_DEATH_DROPS&quot;, &quot;switches&quot;: {&quot;enable&quot;: 0}},
+    {&quot;action&quot;: &quot;GAME_CREATE_SCOREBOARD&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;zh&quot;, &quot;display_name&quot;: &quot;§c§lZombie hunt&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_SHOW_SCOREBOARD&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;zh&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§aKill §e10 §azombies! §7Hit with the hoe, right click = blast.&quot;}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 2}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;start_round&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;start_round&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;values&quot;: 1}},
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kills&quot;}, &quot;values&quot;: 0}},
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;wave&quot;}, &quot;values&quot;: 0}},
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;arena&quot;}, &quot;values&quot;: {&quot;val&quot;: &quot;CURRENT_LOCATION&quot;}}},
+    {&quot;action&quot;: &quot;GAME_SET_SCOREBOARD_SCORE&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;zh&quot;, &quot;tag&quot;: &quot;§fKills&quot;, &quot;score&quot;: 0}},
+    {&quot;action&quot;: &quot;GAME_SET_GAME_RULE_VALUE&quot;, &quot;args&quot;: {&quot;value&quot;: &quot;false&quot;}, &quot;switches&quot;: {&quot;rule&quot;: 6}},
+    {&quot;action&quot;: &quot;GAME_TIME&quot;, &quot;args&quot;: {&quot;time&quot;: 18000}, &quot;switches&quot;: {&quot;state&quot;: 1}},
+    {&quot;action&quot;: &quot;GAME_START_LOOP&quot;, &quot;args&quot;: {&quot;names&quot;: &quot;waves&quot;}},
+    {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;remove_zombies&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;remove_zombies&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;SELECT_MOBS_BY_CONDITION&quot;, &quot;condition&quot;: {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Wave zombie&quot;}}},
+    {&quot;action&quot;: &quot;ENTITY_REMOVE&quot;}
+  ]},
+  {&quot;kind&quot;: &quot;loop&quot;, &quot;name&quot;: &quot;waves&quot;, &quot;ticks&quot;: 60, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;SELECT_RANDOM_PLAYER&quot;},
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;alive&quot;}, &quot;values&quot;: 0}},
+    {&quot;action&quot;: &quot;SELECT_MOBS_BY_CONDITION&quot;, &quot;condition&quot;: {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Wave zombie&quot;}}},
+    {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;alive&quot;}}},
+    {&quot;action&quot;: &quot;SELECT_RANDOM_PLAYER&quot;},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;alive&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 2}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;next_wave&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;next_wave&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;wave&quot;}}},
+    {&quot;action&quot;: &quot;GAME_SPAWN_MOB&quot;, &quot;args&quot;: {&quot;mob&quot;: {&quot;item&quot;: &quot;minecraft:zombie_spawn_egg&quot;}, &quot;locations&quot;: [{&quot;var&quot;: &quot;arena&quot;}, {&quot;var&quot;: &quot;arena&quot;}, {&quot;var&quot;: &quot;arena&quot;}, {&quot;var&quot;: &quot;arena&quot;}], &quot;name&quot;: &quot;Wave zombie&quot;, &quot;max_hp&quot;: 8, &quot;helmet&quot;: {&quot;item&quot;: &quot;minecraft:leather_helmet&quot;}}, &quot;switches&quot;: {&quot;far_away&quot;: 1}},
+    {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§6Wave %var(wave)%&quot;, &quot;subtitle&quot;: &quot;§74 zombies&quot;, &quot;duration&quot;: 40}}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;ENTITY_DAMAGE_ANOTHER_ENTITY&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_PLAYER_HOLDING_ITEM&quot;, &quot;target&quot;: &quot;DAMAGER&quot;, &quot;args&quot;: {&quot;items&quot;: {&quot;item&quot;: &quot;minecraft:iron_hoe&quot;, &quot;components&quot;: {&quot;minecraft:custom_name&quot;: &quot;§6Zombie Hoe&quot;, &quot;minecraft:lore&quot;: [&quot;§7Hit: 6 damage&quot;, &quot;§7Right click: blast (2 s)&quot;]}}}, &quot;switches&quot;: {&quot;durability&quot;: 1, &quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;GAME_SET_DAMAGE_OF_EVENT&quot;, &quot;args&quot;: {&quot;damage&quot;: 6}}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_RIGHT_CLICK&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_PLAYER_HOLDING_ITEM&quot;, &quot;args&quot;: {&quot;items&quot;: {&quot;item&quot;: &quot;minecraft:iron_hoe&quot;, &quot;components&quot;: {&quot;minecraft:custom_name&quot;: &quot;§6Zombie Hoe&quot;, &quot;minecraft:lore&quot;: [&quot;§7Hit: 6 damage&quot;, &quot;§7Right click: blast (2 s)&quot;]}}}, &quot;switches&quot;: {&quot;durability&quot;: 1, &quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;GAME_CANCEL_EVENT&quot;},
+      {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;val&quot;: &quot;CURRENT_UNIX_TIME&quot;}, &quot;num2&quot;: {&quot;var&quot;: &quot;cd_%player_uuid%&quot;}}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;VARIABLE_SUM&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;cd_%player_uuid%&quot;}, &quot;number&quot;: {&quot;val&quot;: &quot;CURRENT_UNIX_TIME&quot;}, &quot;numbers&quot;: 2000}},
+        {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§6Blast!&quot;}},
+        {&quot;action&quot;: &quot;SELECT_MOBS_BY_CONDITION&quot;, &quot;condition&quot;: {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Wave zombie&quot;}}},
+        {&quot;action&quot;: &quot;SELECT_FILTER_BY_DISTANCE&quot;, &quot;args&quot;: {&quot;center&quot;: {&quot;val&quot;: &quot;CURRENT_LOCATION&quot;, &quot;sel&quot;: &quot;DEFAULT&quot;}, &quot;radius&quot;: 4}},
+        {&quot;action&quot;: &quot;PLAYER_DAMAGE&quot;, &quot;args&quot;: {&quot;damage&quot;: 5}},
+        {&quot;action&quot;: &quot;PLAYER_LAUNCH_UPWARDS&quot;, &quot;args&quot;: {&quot;multiplier&quot;: 0.8}}
+      ]},
+      {&quot;action&quot;: &quot;ELSE&quot;, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§7The blast is recharging...&quot;}}
+      ]}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;ENTITY_DEATH&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Wave zombie&quot;}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kills&quot;}}},
+        {&quot;action&quot;: &quot;GAME_SET_SCOREBOARD_SCORE&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;zh&quot;, &quot;tag&quot;: &quot;§fKills&quot;, &quot;score&quot;: {&quot;var&quot;: &quot;kills&quot;}}},
+        {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;kills&quot;}, &quot;num2&quot;: 10}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+          {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;end_round&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+        ]}
+      ]}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;end_round&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;values&quot;: 0}},
+    {&quot;action&quot;: &quot;GAME_STOP_LOOP&quot;, &quot;args&quot;: {&quot;names&quot;: &quot;waves&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§a§lYOU WIN&quot;, &quot;subtitle&quot;: &quot;§7%var(kills)% zombies killed&quot;, &quot;duration&quot;: 80}},
+    {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§aYou won! §7Type /play to play again.&quot;}},
+    {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;remove_zombies&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+  ]}
+]}</pre><p>Notes: <code>arena</code> is the world spawn because <code>PLAYER_JOIN</code> runs when the player stands there. To use another arena, ask the player for its coordinates and put them into <code>arena</code> (with <code>.5</code>, see 14.3). The zombies wear a helmet, so they do not burn even if the night is turned off. The blast uses <code>PLAYER_DAMAGE</code>, which has no attacker, so kills are counted in <code>ENTITY_DEATH</code>, not in <code>PLAYER_KILL_MOB</code>. <code>remove_zombies</code> is a function, so its select does not change the selection of <code>start_round</code> and <code>end_round</code>.</p><h3>Example F: a shop menu with coins</h3><p>An emerald in the hotbar opens a menu. A click on an item buys it when the player has enough saved coins (every player starts with 50).</p><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_JOIN&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;PLAYER_SET_ITEMS&quot;, &quot;args&quot;: {&quot;hotbar&quot;: [{&quot;item&quot;: &quot;minecraft:emerald&quot;, &quot;components&quot;: {&quot;minecraft:custom_name&quot;: &quot;§aShop&quot;, &quot;minecraft:lore&quot;: [&quot;§7Right click to open&quot;]}}]}, &quot;switches&quot;: {&quot;state&quot;: 1}},
+    {&quot;action&quot;: &quot;PLAYER_SET_DEATH_DROPS&quot;, &quot;switches&quot;: {&quot;enable&quot;: 0}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EXIST&quot;, &quot;not&quot;: true, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;coins_%player_uuid%&quot;, &quot;save&quot;: true}}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;coins_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;values&quot;: 50}}
+    ]},
+    {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§6Coins: §e%var(coins_%player_uuid%)%&quot;}}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_RIGHT_CLICK&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_PLAYER_HOLDING_ITEM&quot;, &quot;args&quot;: {&quot;items&quot;: {&quot;item&quot;: &quot;minecraft:emerald&quot;, &quot;components&quot;: {&quot;minecraft:custom_name&quot;: &quot;§aShop&quot;, &quot;minecraft:lore&quot;: [&quot;§7Right click to open&quot;]}}}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;GAME_CANCEL_EVENT&quot;},
+      {&quot;action&quot;: &quot;PLAYER_OPEN_MENU&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;§2Shop&quot;, &quot;items&quot;: [null, null, null, null, null, null, null, null, null, null, null,
+        {&quot;item&quot;: &quot;minecraft:iron_sword&quot;, &quot;components&quot;: {&quot;minecraft:lore&quot;: [&quot;§e20 coins&quot;]}}, null,
+        {&quot;item&quot;: &quot;minecraft:golden_apple&quot;, &quot;components&quot;: {&quot;minecraft:lore&quot;: [&quot;§e10 coins&quot;]}}, null,
+        {&quot;item&quot;: &quot;minecraft:arrow&quot;, &quot;count&quot;: 16, &quot;components&quot;: {&quot;minecraft:lore&quot;: [&quot;§e5 coins&quot;]}}]}, &quot;switches&quot;: {&quot;separator&quot;: 0}}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_CLICK_INVENTORY&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_VARIABLE_TEXT_EQUALS&quot;, &quot;args&quot;: {&quot;text&quot;: {&quot;val&quot;: &quot;CURRENT_INVENTORY_TITLE&quot;}, &quot;texts&quot;: &quot;Shop&quot;}, &quot;switches&quot;: {&quot;colors&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;GAME_CANCEL_EVENT&quot;},
+      {&quot;action&quot;: &quot;IF_VARIABLE_TEXT_EQUALS&quot;, &quot;args&quot;: {&quot;text&quot;: {&quot;val&quot;: &quot;EVENT_TYPE_OF_CLICKED_INVENTORY&quot;}, &quot;texts&quot;: &quot;CHEST&quot;}, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;IF_VARIABLE_EQUALS&quot;, &quot;args&quot;: {&quot;obj&quot;: {&quot;val&quot;: &quot;EVENT_CLICKED_SLOT&quot;}, &quot;objects&quot;: 11}, &quot;children&quot;: [
+          {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;price_%player_uuid%&quot;}, &quot;values&quot;: 20}},
+          {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;goods_%player_uuid%&quot;}, &quot;values&quot;: {&quot;item&quot;: &quot;minecraft:iron_sword&quot;}}},
+          {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;buy&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+        ]},
+        {&quot;action&quot;: &quot;IF_VARIABLE_EQUALS&quot;, &quot;elseIf&quot;: true, &quot;args&quot;: {&quot;obj&quot;: {&quot;val&quot;: &quot;EVENT_CLICKED_SLOT&quot;}, &quot;objects&quot;: 13}, &quot;children&quot;: [
+          {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;price_%player_uuid%&quot;}, &quot;values&quot;: 10}},
+          {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;goods_%player_uuid%&quot;}, &quot;values&quot;: {&quot;item&quot;: &quot;minecraft:golden_apple&quot;}}},
+          {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;buy&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+        ]},
+        {&quot;action&quot;: &quot;IF_VARIABLE_EQUALS&quot;, &quot;elseIf&quot;: true, &quot;args&quot;: {&quot;obj&quot;: {&quot;val&quot;: &quot;EVENT_CLICKED_SLOT&quot;}, &quot;objects&quot;: 15}, &quot;children&quot;: [
+          {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;price_%player_uuid%&quot;}, &quot;values&quot;: 5}},
+          {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;goods_%player_uuid%&quot;}, &quot;values&quot;: {&quot;item&quot;: &quot;minecraft:arrow&quot;, &quot;count&quot;: 16}}},
+          {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;buy&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+        ]}
+      ]}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;buy&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;coins_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;num2&quot;: {&quot;var&quot;: &quot;price_%player_uuid%&quot;}}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;VARIABLE_DIFFERENCE&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;coins_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;number&quot;: {&quot;var&quot;: &quot;coins_%player_uuid%&quot;, &quot;save&quot;: true}, &quot;numbers&quot;: {&quot;var&quot;: &quot;price_%player_uuid%&quot;}}},
+      {&quot;action&quot;: &quot;PLAYER_GIVE_ITEMS&quot;, &quot;args&quot;: {&quot;items&quot;: {&quot;var&quot;: &quot;goods_%player_uuid%&quot;}}},
+      {&quot;action&quot;: &quot;PLAYER_SOUND&quot;, &quot;args&quot;: {&quot;sound&quot;: &quot;entity.experience_orb.pickup&quot;}},
+      {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§aBought! §6Coins: §e%var(coins_%player_uuid%)%&quot;}}
+    ]},
+    {&quot;action&quot;: &quot;ELSE&quot;, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;PLAYER_SOUND&quot;, &quot;args&quot;: {&quot;sound&quot;: &quot;entity.villager.no&quot;}},
+      {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§cNot enough coins §7(%var(coins_%player_uuid%)%)&quot;}}
+    ]}
+  ]}
+]}</pre><p>Notes: the menu is recognised by its title (<code>CURRENT_INVENTORY_TITLE</code>, compared without colors), and the click is cancelled first, so the player cannot take the items out. <code>EVENT_TYPE_OF_CLICKED_INVENTORY</code> = <code>CHEST</code> keeps only clicks in the menu itself: a click in the player&#x27;s own inventory below has its own slot numbers (0, 1, 2...) and would otherwise buy too. Functions have no parameters, so every button writes the price and the item into per-player variables and calls the same <code>buy</code> function. Add a button: one more <code>elseIf</code> with its slot, price and item, and the item in <code>PLAYER_OPEN_MENU</code> at that slot.</p><h3>Example G: a round for several players, with saved wins and a top list</h3><p>The round starts when 2 players are in the world (5 second countdown). Dead players watch in spectator mode, the last one alive wins. Wins are saved; the scoreboard shows them (it sorts by score itself) and the chat shows the top 3.</p><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_JOIN&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;spawn&quot;}, &quot;values&quot;: {&quot;val&quot;: &quot;CURRENT_LOCATION&quot;}}},
+    {&quot;action&quot;: &quot;GAME_CREATE_SCOREBOARD&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;wins&quot;, &quot;display_name&quot;: &quot;§6§lWins&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_SHOW_SCOREBOARD&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;wins&quot;}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;PLAYER_SET_GAMEMODE&quot;, &quot;switches&quot;: {&quot;gm&quot;: 3}},
+      {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§7A round is running. You watch until the next one.&quot;}}
+    ]},
+    {&quot;action&quot;: &quot;ELSE&quot;, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§eLast one standing wins! §7The round starts when 2 players are here.&quot;}}
+    ]},
+    {&quot;action&quot;: &quot;GAME_START_LOOP&quot;, &quot;args&quot;: {&quot;names&quot;: &quot;game&quot;}}
+  ]},
+  {&quot;kind&quot;: &quot;loop&quot;, &quot;name&quot;: &quot;game&quot;, &quot;ticks&quot;: 20, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;SELECT_RANDOM_PLAYER&quot;},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 2}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;playing&quot;}, &quot;values&quot;: 0}},
+      {&quot;action&quot;: &quot;SELECT_ALL_PLAYERS&quot;},
+      {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;playing&quot;}}},
+      {&quot;action&quot;: &quot;SELECT_RANDOM_PLAYER&quot;},
+      {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;playing&quot;}, &quot;num2&quot;: 2}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;countdown&quot;}}},
+        {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§e%math(6 - %var(countdown)%)%&quot;, &quot;subtitle&quot;: &quot;§7get ready&quot;, &quot;duration&quot;: 20}},
+        {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;countdown&quot;}, &quot;num2&quot;: 5}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+          {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;start_round&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+        ]}
+      ]},
+      {&quot;action&quot;: &quot;ELSE&quot;, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;countdown&quot;}, &quot;values&quot;: 0}},
+        {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§7Waiting for players: §e%var(playing)%§7/2&quot;}}
+      ]}
+    ]},
+    {&quot;action&quot;: &quot;ELSE&quot;, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;LIST_SIZE&quot;, &quot;args&quot;: {&quot;list&quot;: {&quot;var&quot;: &quot;alive&quot;}, &quot;output&quot;: {&quot;var&quot;: &quot;alive_count&quot;}}},
+      {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;alive_count&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 3}, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;end_round&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+      ]}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;start_round&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;values&quot;: 1}},
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;countdown&quot;}, &quot;values&quot;: 0}},
+    {&quot;action&quot;: &quot;LIST_CREATE_OR_CLEAR&quot;, &quot;args&quot;: {&quot;list&quot;: {&quot;var&quot;: &quot;alive&quot;}}},
+    {&quot;action&quot;: &quot;SELECT_ALL_PLAYERS&quot;},
+    {&quot;action&quot;: &quot;LIST_APPEND&quot;, &quot;args&quot;: {&quot;list&quot;: {&quot;var&quot;: &quot;alive&quot;}, &quot;values&quot;: &quot;%selected%&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_SET_GAMEMODE&quot;, &quot;switches&quot;: {&quot;gm&quot;: 2}},
+    {&quot;action&quot;: &quot;PLAYER_TELEPORT&quot;, &quot;args&quot;: {&quot;location&quot;: {&quot;var&quot;: &quot;spawn&quot;}}},
+    {&quot;action&quot;: &quot;PLAYER_SET_ITEMS&quot;, &quot;args&quot;: {&quot;hotbar&quot;: [{&quot;item&quot;: &quot;minecraft:stone_sword&quot;}]}, &quot;switches&quot;: {&quot;state&quot;: 0}},
+    {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§c§lFIGHT!&quot;, &quot;subtitle&quot;: &quot;§7last one standing wins&quot;, &quot;duration&quot;: 40}}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_DEATH&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;LIST_REMOVE&quot;, &quot;args&quot;: {&quot;list&quot;: {&quot;var&quot;: &quot;alive&quot;}, &quot;value&quot;: &quot;%player%&quot;}, &quot;switches&quot;: {&quot;remove_mode&quot;: 2}},
+      {&quot;action&quot;: &quot;PLAYER_SET_GAMEMODE&quot;, &quot;switches&quot;: {&quot;gm&quot;: 3}},
+      {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§c%player% is out!&quot;}}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_QUIT&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;LIST_REMOVE&quot;, &quot;args&quot;: {&quot;list&quot;: {&quot;var&quot;: &quot;alive&quot;}, &quot;value&quot;: &quot;%player%&quot;}, &quot;switches&quot;: {&quot;remove_mode&quot;: 2}}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;end_round&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;values&quot;: 0}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;alive_count&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;LIST_GET_BY_INDEX&quot;, &quot;args&quot;: {&quot;list&quot;: {&quot;var&quot;: &quot;alive&quot;}, &quot;index&quot;: 1, &quot;output_var&quot;: {&quot;var&quot;: &quot;winner&quot;}}},
+      {&quot;action&quot;: &quot;DICT_GET_BY_KEY&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins&quot;, &quot;save&quot;: true}, &quot;key&quot;: &quot;%var(winner)%&quot;, &quot;output_var&quot;: {&quot;var&quot;: &quot;winner_wins&quot;}}},
+      {&quot;action&quot;: &quot;VARIABLE_INCREMENT&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;winner_wins&quot;}}},
+      {&quot;action&quot;: &quot;DICT_PUT&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins&quot;, &quot;save&quot;: true}, &quot;key&quot;: &quot;%var(winner)%&quot;, &quot;value&quot;: {&quot;var&quot;: &quot;winner_wins&quot;}}},
+      {&quot;action&quot;: &quot;GAME_SET_SCOREBOARD_SCORE&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;wins&quot;, &quot;tag&quot;: &quot;%var(winner)%&quot;, &quot;score&quot;: {&quot;var&quot;: &quot;winner_wins&quot;}}},
+      {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§6%var(winner)% wins!&quot;, &quot;subtitle&quot;: &quot;§7wins: %var(winner_wins)%&quot;, &quot;duration&quot;: 60}},
+      {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;show_top&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+    ]},
+    {&quot;action&quot;: &quot;SELECT_ALL_PLAYERS&quot;},
+    {&quot;action&quot;: &quot;PLAYER_SET_GAMEMODE&quot;, &quot;switches&quot;: {&quot;gm&quot;: 2}},
+    {&quot;action&quot;: &quot;PLAYER_TELEPORT&quot;, &quot;args&quot;: {&quot;location&quot;: {&quot;var&quot;: &quot;spawn&quot;}}}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;show_top&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;DICT_SORT&quot;, &quot;args&quot;: {&quot;input_dict&quot;: {&quot;var&quot;: &quot;wins&quot;, &quot;save&quot;: true}, &quot;output_dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}}, &quot;switches&quot;: {&quot;sort_by&quot;: 1, &quot;asc_sort&quot;: 1}},
+    {&quot;action&quot;: &quot;DICT_SIZE&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}, &quot;output&quot;: {&quot;var&quot;: &quot;top_size&quot;}}},
+    {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§6§lTop players:&quot;}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;top_size&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;DICT_KEY_BY_INDEX&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}, &quot;index&quot;: 1, &quot;output_var&quot;: {&quot;var&quot;: &quot;top_name&quot;}}},
+      {&quot;action&quot;: &quot;DICT_VALUE_BY_INDEX&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}, &quot;index&quot;: 1, &quot;output_var&quot;: {&quot;var&quot;: &quot;top_wins&quot;}}},
+      {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§e1. §f%var(top_name)% §7- %var(top_wins)%&quot;}}
+    ]},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;top_size&quot;}, &quot;num2&quot;: 2}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;DICT_KEY_BY_INDEX&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}, &quot;index&quot;: 2, &quot;output_var&quot;: {&quot;var&quot;: &quot;top_name&quot;}}},
+      {&quot;action&quot;: &quot;DICT_VALUE_BY_INDEX&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}, &quot;index&quot;: 2, &quot;output_var&quot;: {&quot;var&quot;: &quot;top_wins&quot;}}},
+      {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§e2. §f%var(top_name)% §7- %var(top_wins)%&quot;}}
+    ]},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;top_size&quot;}, &quot;num2&quot;: 3}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;DICT_KEY_BY_INDEX&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}, &quot;index&quot;: 3, &quot;output_var&quot;: {&quot;var&quot;: &quot;top_name&quot;}}},
+      {&quot;action&quot;: &quot;DICT_VALUE_BY_INDEX&quot;, &quot;args&quot;: {&quot;dict&quot;: {&quot;var&quot;: &quot;wins_top&quot;}, &quot;index&quot;: 3, &quot;output_var&quot;: {&quot;var&quot;: &quot;top_wins&quot;}}},
+      {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§e3. §f%var(top_name)% §7- %var(top_wins)%&quot;}}
+    ]}
+  ]}
+]}</pre><p>Notes: ONE loop owns the round: in the lobby it counts players and runs the countdown, during the round it checks how many are alive. Events only change shared data (<code>PLAYER_DEATH</code> and <code>PLAYER_QUIT</code> remove the player from the <code>alive</code> list), so a death, a quit and a <code>/play</code> in the middle of the round are all handled the same way and the round can never end twice. The <code>alive</code> list holds names (<code>%selected%</code> when it is filled for every selected player). A player who joins during a round becomes a spectator until the next one. Top lists: <code>DICT_SORT</code> by value, descending, then read the first places with <code>DICT_KEY_BY_INDEX</code> / <code>DICT_VALUE_BY_INDEX</code> (positions start at 1); check <code>DICT_SIZE</code> first, because a missing place reads as the number 0.</p><h3>Example H: a boss fight with a bossbar</h3><p>A boss spawns when the fight starts. The bossbar shows its health. Every 5 seconds it stomps: players within 6 blocks take damage and are pushed away (section 14.7, recipe 3). Killing it wins; <code>/play</code> starts a new fight.</p><pre>{&quot;handlers&quot;: [
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;PLAYER_JOIN&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;PLAYER_SET_ITEMS&quot;, &quot;args&quot;: {&quot;hotbar&quot;: [{&quot;item&quot;: &quot;minecraft:iron_sword&quot;}]}, &quot;switches&quot;: {&quot;state&quot;: 1}},
+    {&quot;action&quot;: &quot;PLAYER_SET_DEATH_DROPS&quot;, &quot;switches&quot;: {&quot;enable&quot;: 0}},
+    {&quot;action&quot;: &quot;GAME_CREATE_BOSSBAR&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;boss&quot;, &quot;title&quot;: &quot;§4§lStone King&quot;}, &quot;switches&quot;: {&quot;state&quot;: 0, &quot;state1&quot;: 2}},
+    {&quot;action&quot;: &quot;PLAYER_SHOW_BOSSBAR&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;boss&quot;}},
+    {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 2}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;start_fight&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;start_fight&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;values&quot;: 1}},
+    {&quot;action&quot;: &quot;CALL_FUNCTION&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;remove_boss&quot;}, &quot;switches&quot;: {&quot;async&quot;: 0}},
+    {&quot;action&quot;: &quot;GAME_SPAWN_MOB&quot;, &quot;args&quot;: {&quot;mob&quot;: {&quot;item&quot;: &quot;minecraft:husk_spawn_egg&quot;}, &quot;locations&quot;: {&quot;val&quot;: &quot;CURRENT_LOCATION&quot;}, &quot;name&quot;: &quot;Stone King&quot;, &quot;max_hp&quot;: 60, &quot;damage&quot;: 3, &quot;helmet&quot;: {&quot;item&quot;: &quot;minecraft:golden_helmet&quot;}}, &quot;switches&quot;: {&quot;far_away&quot;: 1, &quot;name_visible&quot;: 1}},
+    {&quot;action&quot;: &quot;GAME_SET_BOSSBAR_PROGRESS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;boss&quot;, &quot;progress&quot;: 100}},
+    {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§4§lStone King&quot;, &quot;subtitle&quot;: &quot;§7defeat the boss&quot;, &quot;duration&quot;: 60}},
+    {&quot;action&quot;: &quot;GAME_START_LOOP&quot;, &quot;args&quot;: {&quot;names&quot;: &quot;boss_attack&quot;}}
+  ]},
+  {&quot;kind&quot;: &quot;function&quot;, &quot;name&quot;: &quot;remove_boss&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;SELECT_MOBS_BY_CONDITION&quot;, &quot;condition&quot;: {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Stone King&quot;}}},
+    {&quot;action&quot;: &quot;ENTITY_REMOVE&quot;}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;ENTITY_TAKE_DAMAGE&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Stone King&quot;}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;GAME_SET_BOSSBAR_PROGRESS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;boss&quot;, &quot;progress&quot;: &quot;%math(max(0, %value(CURRENT_HEALTH)% - %value(EVENT_FINAL_DAMAGE)%) * 100 / 60)%&quot;}}
+    ]}
+  ]},
+  {&quot;kind&quot;: &quot;loop&quot;, &quot;name&quot;: &quot;boss_attack&quot;, &quot;ticks&quot;: 100, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;SELECT_MOBS_BY_CONDITION&quot;, &quot;condition&quot;: {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Stone King&quot;}}},
+    {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;boss_loc&quot;}, &quot;values&quot;: {&quot;val&quot;: &quot;CURRENT_LOCATION&quot;}}},
+    {&quot;action&quot;: &quot;SELECT_ALL_PLAYERS&quot;},
+    {&quot;action&quot;: &quot;SELECT_FILTER_BY_DISTANCE&quot;, &quot;args&quot;: {&quot;center&quot;: {&quot;var&quot;: &quot;boss_loc&quot;}, &quot;radius&quot;: 6}},
+    {&quot;action&quot;: &quot;PLAYER_ACTION_BAR&quot;, &quot;args&quot;: {&quot;message&quot;: &quot;§cThe Stone King stomps!&quot;}},
+    {&quot;action&quot;: &quot;PLAYER_DAMAGE&quot;, &quot;args&quot;: {&quot;damage&quot;: 3}},
+    {&quot;action&quot;: &quot;VARIABLE_CREATE_VECTOR_BETWEEN_LOCATIONS&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kb_%uuid%&quot;}, &quot;location&quot;: {&quot;var&quot;: &quot;boss_loc&quot;}, &quot;location2&quot;: {&quot;val&quot;: &quot;CURRENT_LOCATION&quot;}}},
+    {&quot;action&quot;: &quot;VARIABLE_HADAMARD_PRODUCT_OF_VECTORS&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kb_%uuid%&quot;}, &quot;vector&quot;: {&quot;var&quot;: &quot;kb_%uuid%&quot;}, &quot;vector2&quot;: {&quot;vec&quot;: [1, 0, 1]}}},
+    {&quot;action&quot;: &quot;VARIABLE_SET_LENGTH_OF_VECTOR&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;kb_%uuid%&quot;}, &quot;vector&quot;: {&quot;var&quot;: &quot;kb_%uuid%&quot;}, &quot;length&quot;: 1.2}},
+    {&quot;action&quot;: &quot;VARIABLE_GET_COORDINATES_OF_VECTOR&quot;, &quot;args&quot;: {&quot;vector&quot;: {&quot;var&quot;: &quot;kb_%uuid%&quot;}, &quot;x&quot;: {&quot;var&quot;: &quot;kx_%uuid%&quot;}, &quot;z&quot;: {&quot;var&quot;: &quot;kz_%uuid%&quot;}}},
+    {&quot;action&quot;: &quot;PLAYER_LAUNCH_TOWARD&quot;, &quot;args&quot;: {&quot;x&quot;: {&quot;var&quot;: &quot;kx_%uuid%&quot;}, &quot;y&quot;: 0.6, &quot;z&quot;: {&quot;var&quot;: &quot;kz_%uuid%&quot;}}}
+  ]},
+  {&quot;kind&quot;: &quot;event&quot;, &quot;event&quot;: &quot;ENTITY_DEATH&quot;, &quot;nodes&quot;: [
+    {&quot;action&quot;: &quot;IF_ENTITY_NAME_EQUALS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;Stone King&quot;}, &quot;children&quot;: [
+      {&quot;action&quot;: &quot;IF_VARIABLE_EASY_COMPARE_NUMBER&quot;, &quot;args&quot;: {&quot;num1&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;num2&quot;: 1}, &quot;switches&quot;: {&quot;state&quot;: 1}, &quot;children&quot;: [
+        {&quot;action&quot;: &quot;VARIABLE_SET&quot;, &quot;args&quot;: {&quot;variable&quot;: {&quot;var&quot;: &quot;phase&quot;}, &quot;values&quot;: 0}},
+        {&quot;action&quot;: &quot;GAME_STOP_LOOP&quot;, &quot;args&quot;: {&quot;names&quot;: &quot;boss_attack&quot;}},
+        {&quot;action&quot;: &quot;GAME_SET_BOSSBAR_PROGRESS&quot;, &quot;args&quot;: {&quot;name&quot;: &quot;boss&quot;, &quot;progress&quot;: 0}},
+        {&quot;action&quot;: &quot;PLAYER_TITLE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;title&quot;: &quot;§6§lVICTORY&quot;, &quot;subtitle&quot;: &quot;§7the Stone King is defeated&quot;, &quot;duration&quot;: 80}},
+        {&quot;action&quot;: &quot;PLAYER_SOUND&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;sound&quot;: &quot;ui.toast.challenge_complete&quot;}},
+        {&quot;action&quot;: &quot;PLAYER_MESSAGE&quot;, &quot;target&quot;: &quot;ALL&quot;, &quot;args&quot;: {&quot;texts&quot;: &quot;§aThe boss is defeated! §7Type /play to fight again.&quot;}}
+      ]}
+    ]}
+  ]}
+]}</pre><p>Notes: <code>ENTITY_TAKE_DAMAGE</code> runs BEFORE the damage is applied, so the new health is <code>CURRENT_HEALTH - EVENT_FINAL_DAMAGE</code> (and <code>max(0, ...)</code> so it does not go below 0); <code>* 100 / 60</code> turns it into percent of the boss&#x27;s <code>max_hp</code> 60. The loop selects the boss by name and saves its location before it selects the players. The boss spawns at the world spawn (section 14.3); for a real arena use its coordinates.</p></div><footer class="footer"><span>CREATIVE+ DOCS</span><span>MINELAND / VISUAL CODING</span><span>BUILD · TEST · CREATE</span></footer></main></div><script src="assets/app.js"></script></body></html>
