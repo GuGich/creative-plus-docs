@@ -1,36 +1,43 @@
-# Creative+ Docs — главная страница
+# Creative+ Docs
 
-Стартовый проект на VitePress с главной страницей технической документации по визуальному кодингу Mineland Creative+.
+Сайт документации по визуальному кодингу Mineland Creative+, собранный на VitePress.
 
-## Запуск локально
+## Локальный запуск
+
+Требуется Node.js 20 или новее.
 
 ```bash
 npm install
 npm run docs:dev
 ```
 
-Открой адрес, который покажет VitePress в терминале (обычно `http://localhost:5173`).
+Открой адрес, который покажет VitePress (обычно `http://localhost:5173/creative-plus-docs/`).
 
-## Сборка сайта
+## Проверка и сборка
 
 ```bash
 npm run docs:build
 npm run docs:preview
 ```
 
-## Где редактировать
+Готовый статический сайт появится в `.vitepress/dist`.
 
-- `index.md` — содержание главной страницы.
-- `.vitepress/theme/style.css` — оформление и адаптивность.
-- `.vitepress/config.mts` — название сайта, навигация, поиск и подвал.
-- `public/hero-visual.svg` — иллюстрация на первом экране.
-- `public/logo.svg` — логотип.
+## Публикация на GitHub Pages
 
-Разделы каталога на главной пока являются обзорными карточками. По мере подготовки статей их можно связать с отдельными страницами документации.
+1. Создай публичный репозиторий с названием `creative-plus-docs`.
+2. Загрузи в него содержимое этой папки.
+3. В настройках репозитория открой **Settings → Pages**.
+4. В **Build and deployment → Source** выбери **GitHub Actions**.
+5. Отправь изменения в ветку `main`. Workflow из `.github/workflows/deploy.yml` соберёт и опубликует сайт.
 
+Адрес при стандартной настройке: `https://<твой-логин>.github.io/creative-plus-docs/`.
 
-## Публикация через GitHub Pages
+Если название репозитория или адрес сайта изменится, обнови `base` в `.vitepress/config.mts` и абсолютные ссылки в главной странице.
 
-Проект подготовлен для GitHub Pages. Создайте публичный репозиторий с точным названием `creative-plus-docs`, загрузите в него содержимое этой папки и используйте ветку `main`. Затем откройте `Settings → Pages` и в поле `Build and deployment → Source` выберите `GitHub Actions`. Workflow в `.github/workflows/deploy.yml` соберёт и опубликует сайт автоматически.
+## Структура
 
-Адрес сайта будет иметь вид `https://ВАШ-ЛОГИН.github.io/creative-plus-docs/`. Если репозиторий будет называться иначе, измените `base` в `.vitepress/config.mts` на `'/ИМЯ-РЕПОЗИТОРИЯ/'`. Для собственного домена `base` обычно нужно изменить на `'/'` и отдельно настроить домен в GitHub Pages.
+- `index.md` — главная страница.
+- `guide/` — статьи и категории документации.
+- `.vitepress/config.mts` — навигация, поиск и настройки VitePress.
+- `.vitepress/theme/style.css` — оформление сайта.
+- `public/` — логотип и статические ресурсы.

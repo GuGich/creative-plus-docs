@@ -1,140 +1,78 @@
 ---
 layout: home
-hero:
-  name: Creative+ <span class="hero-accent">Docs</span>
-  text: Технический справочник по визуальному кодингу
-  tagline: Разбирай блоки, понимай логику их работы и собирай собственные игровые механики в Mineland Creative+.
-  image:
-    src: /hero-visual.svg
-    alt: Схема визуальной логики — событие, условие и действие
-  actions:
-    - theme: brand
-      text: Перейти к разделам
-      link: '#catalog'
-    - theme: alt
-      text: Как устроен справочник
-      link: '#workflow'
-features:
-  - title: Блоки и их параметры
-    details: Назначение, аргументы, настройки и особенности работы каждого блока.
-    link: '#catalog'
-    linkText: Смотреть каталог
-  - title: Логика и данные
-    details: События, условия, переменные, выбор целей и коллекции — в одной системе.
-    link: '#principles'
-    linkText: Основные понятия
-  - title: Практические схемы
-    details: Разборы связок блоков, которые помогают перейти от идеи к работающей механике.
-    link: '#workflow'
-    linkText: Как учиться
+title: Creative+ Docs
 ---
 
-<div class="home-after-hero">
-  <div class="status-strip">
-    <div class="status-item"><span class="status-dot"></span><span>MINELAND CREATIVE+</span></div>
-    <div class="status-item"><span class="status-label">СРЕДА</span><span>MINECRAFT 1.21.11</span></div>
-    <div class="status-item"><span class="status-label">ФОРМАТ</span><span>ВИЗУАЛЬНЫЙ КОД</span></div>
+<div class="landing">
+  <section class="intro-shell">
+    <div class="intro-copy">
+      <div class="intro-kicker"><span class="kicker-line"></span> MINELAND / CREATIVE+ / KNOWLEDGE BASE</div>
+      <h1>Понимай код.<br><span>Создавай больше.</span></h1>
+      <p class="intro-lead">Техническая документация по визуальному редактору Creative+ — от отдельных блоков до сложных игровых механик.</p>
+      <div class="intro-actions">
+        <a class="action-primary" href="/creative-plus-docs/guide/">Открыть документацию <span>↗</span></a>
+        <a class="action-secondary" href="#catalog">Посмотреть разделы</a>
+      </div>
+      <div class="intro-meta"><span><i class="meta-dot"></i> СПРАВОЧНИК РАЗРАБОТЧИКА</span><span>РУССКИЙ ЯЗЫК</span></div>
+    </div>
+
+    <div class="visual-panel" aria-label="Схема визуального кода: событие, условие, действие">
+      <div class="visual-topbar"><div class="window-dots"><i></i><i></i><i></i></div><span>LOGIC BUILDER</span><span class="visual-version">CREATIVE+</span></div>
+      <div class="visual-canvas">
+        <div class="flow-line line-one"></div><div class="flow-line line-two"></div><div class="flow-line line-three"></div>
+        <div class="logic-node node-event"><span class="node-icon">↳</span><div><small>СОБЫТИЕ</small><strong>Игрок присоединился</strong></div><b>01</b></div>
+        <div class="logic-branch">
+          <div class="logic-node node-condition"><span class="node-icon">◇</span><div><small>УСЛОВИЕ</small><strong>Проверить состояние</strong></div><b>02</b></div>
+          <div class="logic-node node-action"><span class="node-icon">▣</span><div><small>ДЕЙСТВИЕ</small><strong>Отправить сообщение</strong></div><b>03</b></div>
+        </div>
+        <div class="visual-bottom"><span class="bottom-mark">C<span>+</span></span><div><small>ВИЗУАЛЬНОЕ ПРОГРАММИРОВАНИЕ</small><strong>Собирай логику из блоков</strong></div><span class="bottom-arrow">↗</span></div>
+      </div>
+      <div class="visual-caption"><span>01 — EVENT</span><span>02 — CONDITION</span><span>03 — ACTION</span></div>
+    </div>
+  </section>
+
+  <div class="quick-facts">
+    <div><span class="fact-index">01</span><span><b>Блоки редактора</b><small>Назначение и параметры</small></span></div>
+    <div><span class="fact-index">02</span><span><b>Логика работы</b><small>Связи и порядок выполнения</small></span></div>
+    <div><span class="fact-index">03</span><span><b>Практика</b><small>Примеры игровых механик</small></span></div>
   </div>
 
-  <section id="catalog" class="doc-section">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">01 / KNOWLEDGE BASE</p>
-        <h2>Разделы документации</h2>
-      </div>
-      <p class="section-note">Отдельные элементы редактора и фундаментальные понятия, из которых складывается код.</p>
+  <section id="catalog" class="landing-section catalog-section">
+    <div class="section-head">
+      <div><div class="section-kicker">01 / КАТАЛОГ</div><h2>Найди нужный блок</h2></div>
+      <p>Документация организована по назначению блоков. Выбери категорию, чтобы перейти к её описанию.</p>
     </div>
-
-    <div class="catalog-grid">
-      <a class="catalog-card card-event" href="#principles">
-        <span class="card-index">01</span><span class="card-symbol">↳</span>
-        <h3>События</h3>
-        <p>Точки запуска кода: действия игроков, сущностей и события мира.</p>
-        <span class="card-foot">EVENTS <span>↗</span></span>
-      </a>
-      <a class="catalog-card card-action" href="#principles">
-        <span class="card-index">02</span><span class="card-symbol">▣</span>
-        <h3>Действия</h3>
-        <p>Команды для игроков, сущностей, мира и игровых объектов.</p>
-        <span class="card-foot">ACTIONS <span>↗</span></span>
-      </a>
-      <a class="catalog-card card-condition" href="#principles">
-        <span class="card-index">03</span><span class="card-symbol">◇</span>
-        <h3>Условия</h3>
-        <p>Проверки, ветвления и логика принятия решений.</p>
-        <span class="card-foot">CONDITIONS <span>↗</span></span>
-      </a>
-      <a class="catalog-card card-target" href="#principles">
-        <span class="card-index">04</span><span class="card-symbol">◎</span>
-        <h3>Выбор целей</h3>
-        <p>Выбор игроков и сущностей, фильтрация и управление выборкой.</p>
-        <span class="card-foot">SELECTIONS <span>↗</span></span>
-      </a>
-      <a class="catalog-card card-variable" href="#principles">
-        <span class="card-index">05</span><span class="card-symbol">{ }</span>
-        <h3>Переменные</h3>
-        <p>Хранение значений, получение данных и операции над ними.</p>
-        <span class="card-foot">VARIABLES <span>↗</span></span>
-      </a>
-      <a class="catalog-card card-collection" href="#principles">
-        <span class="card-index">06</span><span class="card-symbol">▤</span>
-        <h3>Коллекции</h3>
-        <p>Списки, словари и множества для работы с группами данных.</p>
-        <span class="card-foot">COLLECTIONS <span>↗</span></span>
-      </a>
-      <a class="catalog-card card-control" href="#principles">
-        <span class="card-index">07</span><span class="card-symbol">⏵</span>
-        <h3>Управление кодом</h3>
-        <p>Ожидания, циклы, функции и порядок выполнения блоков.</p>
-        <span class="card-foot">CONTROL FLOW <span>↗</span></span>
-      </a>
-      <a class="catalog-card card-values" href="#principles">
-        <span class="card-index">08</span><span class="card-symbol">⌘</span>
-        <h3>Игровые значения</h3>
-        <p>Данные об игроках, мире, сущностях и текущем состоянии игры.</p>
-        <span class="card-foot">GAME VALUES <span>↗</span></span>
-      </a>
+    <div class="catalog-list">
+      <a class="catalog-item tone-event" href="/creative-plus-docs/guide/events/"><span class="catalog-number">01</span><span class="catalog-icon">↳</span><span class="catalog-text"><b>События</b><small>Что запускает выполнение кода: игроки, сущности и мир.</small></span><span class="catalog-arrow">↗</span></a>
+      <a class="catalog-item tone-action" href="/creative-plus-docs/guide/actions/"><span class="catalog-number">02</span><span class="catalog-icon">▣</span><span class="catalog-text"><b>Действия</b><small>Команды для игроков, сущностей и игрового мира.</small></span><span class="catalog-arrow">↗</span></a>
+      <a class="catalog-item tone-condition" href="/creative-plus-docs/guide/conditions/"><span class="catalog-number">03</span><span class="catalog-icon">◇</span><span class="catalog-text"><b>Условия</b><small>Проверки, сравнения и ветвление логики.</small></span><span class="catalog-arrow">↗</span></a>
+      <a class="catalog-item tone-selection" href="/creative-plus-docs/guide/selection/"><span class="catalog-number">04</span><span class="catalog-icon">◎</span><span class="catalog-text"><b>Выбор целей</b><small>Выбор игроков и сущностей, фильтрация и группы целей.</small></span><span class="catalog-arrow">↗</span></a>
+      <a class="catalog-item tone-variable" href="/creative-plus-docs/guide/variables/"><span class="catalog-number">05</span><span class="catalog-icon">{ }</span><span class="catalog-text"><b>Переменные</b><small>Хранение, изменение и получение значений.</small></span><span class="catalog-arrow">↗</span></a>
+      <a class="catalog-item tone-collection" href="/creative-plus-docs/guide/collections/"><span class="catalog-number">06</span><span class="catalog-icon">▤</span><span class="catalog-text"><b>Коллекции</b><small>Списки, словари и множества для работы с данными.</small></span><span class="catalog-arrow">↗</span></a>
+      <a class="catalog-item tone-control" href="/creative-plus-docs/guide/control-flow/"><span class="catalog-number">07</span><span class="catalog-icon">⏵</span><span class="catalog-text"><b>Управление кодом</b><small>Ожидания, циклы, функции и порядок выполнения.</small></span><span class="catalog-arrow">↗</span></a>
+      <a class="catalog-item tone-values" href="/creative-plus-docs/guide/game-values/"><span class="catalog-number">08</span><span class="catalog-icon">⌘</span><span class="catalog-text"><b>Игровые значения</b><small>Данные об игроках, мире и сущностях.</small></span><span class="catalog-arrow">↗</span></a>
     </div>
-    <p class="catalog-footnote"><span>В РАЗРАБОТКЕ</span> Каталог будет постепенно наполняться подробными статьями по каждому семейству блоков.</p>
+    <div class="catalog-note"><span class="note-mark">i</span><span>Справочник наполняется. В категориях, где статьи ещё не опубликованы, это будет отмечено отдельно.</span></div>
   </section>
 
-  <section id="workflow" class="workflow-section">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">02 / HOW TO USE</p>
-        <h2>Как устроена статья</h2>
-      </div>
-      <p class="section-note">Каждая статья должна помогать не просто найти блок, а понять, как применять его в редакторе.</p>
+  <section class="landing-section method-section">
+    <div class="section-head">
+      <div><div class="section-kicker">02 / СТРУКТУРА</div><h2>Не просто список блоков</h2></div>
+      <p>Каждая статья должна объяснять, как пользоваться блоком непосредственно в редакторе Creative+.</p>
     </div>
-    <div class="workflow-grid">
-      <div class="workflow-step"><span class="step-number">01</span><div><h3>Назначение</h3><p>Что делает блок и в каких ситуациях он нужен.</p></div></div>
-      <div class="workflow-step"><span class="step-number">02</span><div><h3>Параметры</h3><p>Аргументы, доступные варианты, переключатели и ограничения.</p></div></div>
-      <div class="workflow-step"><span class="step-number">03</span><div><h3>Применение</h3><p>Как блок взаимодействует с другими элементами редактора.</p></div></div>
-      <div class="workflow-step"><span class="step-number">04</span><div><h3>Примеры</h3><p>Наглядные последовательности блоков для игровых механик.</p></div></div>
+    <div class="method-grid">
+      <article><span class="method-no">A</span><h3>Назначение</h3><p>Для чего нужен блок и в каких случаях его использовать.</p></article>
+      <article><span class="method-no">B</span><h3>Параметры</h3><p>Аргументы, доступные варианты, переключатели и типы значений.</p></article>
+      <article><span class="method-no">C</span><h3>Особенности</h3><p>Ограничения, взаимодействия с другими блоками и важные нюансы.</p></article>
+      <article><span class="method-no">D</span><h3>Примеры</h3><p>Понятные схемы сборки механик из визуальных блоков.</p></article>
     </div>
   </section>
 
-  <section id="principles" class="principles-section">
-    <div class="principles-copy">
-      <p class="eyebrow">03 / FOUNDATION</p>
-      <h2>Сначала логика.<br><span>Потом механика.</span></h2>
-      <p>Код Creative+ строится из обработчиков и расположенных в определённом порядке блоков. Чтобы разобраться в сложной механике, важно понимать не только отдельные действия, но и то, как они связаны между собой.</p>
-    </div>
-    <div class="principles-list">
-      <div><span class="mini-tag tag-cyan">EVENT</span><p><strong>Событие</strong><small>Определяет, когда запускается обработчик.</small></p></div>
-      <div><span class="mini-tag tag-gold">LOGIC</span><p><strong>Условие и выбор</strong><small>Определяют, для кого и при каких обстоятельствах выполняется код.</small></p></div>
-      <div><span class="mini-tag tag-violet">ACTION</span><p><strong>Действие</strong><small>Выполняет нужную операцию в игре.</small></p></div>
-    </div>
+  <section class="closing-panel">
+    <div class="closing-symbol">C<span>+</span></div>
+    <div class="closing-copy"><div class="section-kicker">03 / О ПРОЕКТЕ</div><h2>От первого блока<br>до целой игры.</h2><p>Creative+ Docs — независимый справочник по визуальному кодингу Mineland Creative+. Его цель — собрать знания о редакторе в одном месте и сделать их понятными как начинающим, так и опытным разработчикам.</p></div>
+    <a href="/creative-plus-docs/guide/" class="closing-link">Начать изучение <span>↗</span></a>
   </section>
 
-  <section id="about" class="about-section">
-    <div class="about-mark">C<span>+</span></div>
-    <div>
-      <p class="eyebrow">04 / ABOUT THIS PROJECT</p>
-      <h2>Документация, которую удобно читать и развивать.</h2>
-      <p>Creative+ Docs — структурированный справочник по визуальному кодингу Mineland Creative+. Материалы готовятся на основе описания блоков и поведения системы для Minecraft 1.21.11. Неизвестные или неподтверждённые детали не должны подменяться догадками.</p>
-    </div>
-  </section>
-
-  <div class="home-bottomline"><span>CREATIVE+ DOCS</span><span>BUILD · TEST · CREATE</span><span>01 — 04</span></div>
+  <div class="landing-footer"><span>CREATIVE+ DOCS</span><span>MINELAND CREATIVE+ / DEVELOPER REFERENCE</span><span>BUILD · TEST · CREATE</span></div>
 </div>

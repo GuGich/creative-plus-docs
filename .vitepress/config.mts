@@ -1,53 +1,68 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  // GitHub Pages: repository must be named creative-plus-docs.
   base: '/creative-plus-docs/',
   lang: 'ru-RU',
   title: 'Creative+ Docs',
-  description: 'Технический справочник по визуальному кодингу Mineland Creative+.',
+  description: 'Справочник по визуальному кодингу Mineland Creative+.',
   cleanUrls: true,
   appearance: 'dark',
   lastUpdated: true,
   themeConfig: {
-    siteTitle: 'CREATIVE+ <span class="brand-mark">DOCS</span>',
+    siteTitle: 'CREATIVE+ DOCS',
     logo: '/logo.svg',
     nav: [
       { text: 'Главная', link: '/' },
-      { text: 'Каталог', link: '/#catalog' },
-      { text: 'Как пользоваться', link: '/#workflow' },
-      { text: 'О проекте', link: '/#about' }
+      { text: 'Документация', link: '/guide/' },
+      { text: 'Каталог блоков', link: '/guide/#catalog' }
     ],
+    sidebar: {
+      '/guide/': [
+        {
+          text: 'Начало работы',
+          items: [
+            { text: 'Обзор документации', link: '/guide/' },
+            { text: 'Основы кодинга', link: '/guide/getting-started' }
+          ]
+        },
+        {
+          text: 'Блоки редактора',
+          collapsed: false,
+          items: [
+            { text: 'События', link: '/guide/events/' },
+            { text: 'Действия', link: '/guide/actions/' },
+            { text: 'Условия', link: '/guide/conditions/' },
+            { text: 'Выбор целей', link: '/guide/selection/' },
+            { text: 'Переменные', link: '/guide/variables/' },
+            { text: 'Коллекции', link: '/guide/collections/' },
+            { text: 'Управление кодом', link: '/guide/control-flow/' },
+            { text: 'Игровые значения', link: '/guide/game-values/' }
+          ]
+        }
+      ]
+    },
     search: {
       provider: 'local',
       options: {
-        translations: {
-          button: {
-            buttonText: 'Поиск',
-            buttonAriaLabel: 'Поиск по документации'
-          },
-          modal: {
-            noResultsText: 'Ничего не найдено',
-            resetButtonTitle: 'Сбросить поиск',
-            footer: {
-              selectText: 'Выбрать',
-              navigateText: 'Перейти',
-              closeText: 'Закрыть'
+        locales: {
+          ru: {
+            translations: {
+              button: { buttonText: 'Поиск', buttonAriaLabel: 'Поиск по документации' },
+              modal: {
+                noResultsText: 'Ничего не найдено',
+                resetButtonTitle: 'Сбросить поиск',
+                footer: { selectText: 'Выбрать', navigateText: 'Перейти', closeText: 'Закрыть' }
+              }
             }
           }
         }
       }
     },
-    outline: {
-      label: 'На этой странице'
-    },
-    docFooter: {
-      prev: 'Предыдущая страница',
-      next: 'Следующая страница'
-    },
+    outline: { label: 'На этой странице' },
+    docFooter: { prev: 'Предыдущая страница', next: 'Следующая страница' },
     footer: {
       message: 'Справочник по визуальному кодингу Mineland Creative+.',
-      copyright: 'Creative+ Docs · Minecraft 1.21.11'
+      copyright: 'Creative+ Docs'
     }
   }
 })
