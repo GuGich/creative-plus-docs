@@ -2,6 +2,11 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   base: '/creative-plus-docs/',
+  // Load the theme stylesheet as a public asset, not only through the theme bundle.
+  // This keeps GitHub Pages asset resolution explicit and easy to verify.
+  head: [
+    ['link', { rel: 'stylesheet', href: '/creative-plus-docs/creative-plus.css?v=20261127-2' }]
+  ],
   lang: 'ru-RU',
   title: 'Creative+ Docs',
   description: 'Справочник по визуальному кодингу Mineland Creative+.',
