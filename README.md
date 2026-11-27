@@ -39,5 +39,5 @@ npm run docs:preview
 - `index.md` — главная страница.
 - `guide/` — статьи и категории документации.
 - `.vitepress/config.mts` — навигация, поиск и настройки VitePress.
-- `.vitepress/theme/style.css` — оформление сайта.
+- `.vitepress/theme/style.css` — оформление сайта; он подключён в `.vitepress/theme/index.ts` через `import './style.css'`.
 - `public/` — логотип и статические ресурсы.
